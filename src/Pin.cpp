@@ -5,7 +5,7 @@ public:
     int no;
     String topic;
     int status = LOW;
-    Pin(int num, char* topic_) {
+    Pin(int num, char topic_[]) {
         no=num;
         topic=String(topic_);
     }

@@ -4,7 +4,7 @@ class Pin
 {
 public:
     int no;
-    char topic[];
+    char* topic;
     int status;
     Pin(int num,char topic_[]) {}
     void init(){}
