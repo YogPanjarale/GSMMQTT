@@ -6,7 +6,7 @@ public:
     int no;
     char* topic;
     int status;
-    Pin(int num,char topic_[]) {}
+    Pin(int num,String topic_) {}
     void init(){}
     void on(){}
     void off(){}
