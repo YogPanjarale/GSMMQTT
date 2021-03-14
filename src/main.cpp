@@ -6,8 +6,12 @@ const char gprsUser[] = "";
 const char gprsPass[] = "";
 // MQTT details
 const char* broker = "broker.hivemq.com";
-char topicbase[] ="dev";
-char clientName[] ="dev01";
+const char topicbase[] ="dev/";
+const char clientName[] ="dev01";
+const char logsPath[] ="dev01/log";
+const boolean isAuth=false;
+const char mqttUserName[]="username";
+const char mqttUserpass[]="userpassword";
 
 #include <Pin.h>
 Pin p1(7,"00p1");
@@ -36,18 +40,22 @@ void mqttCallback(char* topic, byte* payload, unsigned int len) {
 boolean mqttConnect() {
   SerialMon.print("Connecting to ");
   SerialMon.print(broker);
-
+  boolean status;
   // Connect to MQTT Broker
-  boolean status = mqtt.connect(clientName);
-  // Or, if you want to authenticate MQTT:
-  //boolean status = mqtt.connect("GsmClientName", "mqtt_user", "mqtt_pass");
+  if (isAuth){
+  status = mqtt.connect(clientName, mqttUserName, mqttUserpass);
+  }else // Or, if you want to authenticate MQTT:
+  {
+  status = mqtt.connect(clientName);
+
+  }
 
   if (status == false) {
     SerialMon.println(" fail");
     return false;
   }
   SerialMon.println(" success");
-  // mqtt.publish(topic, "GsmClientTest started");
+  mqtt.publish(logsPath,"GsmClientTest started");
   // mqtt.subscribe(topicLed);
   return mqtt.connected();
 }
