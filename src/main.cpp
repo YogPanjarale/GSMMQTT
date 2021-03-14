@@ -6,7 +6,8 @@ const char gprsUser[] = "";
 const char gprsPass[] = "";
 // MQTT details
 const char* broker = "broker.hivemq.com";
-const char topicbase[] ="dev/";
+const char topicbase[] ="dev01/";
+const char topicToSubscribe[] ="dev01/#";
 const char clientName[] ="dev01";
 const char logsPath[] ="dev01/log";
 const boolean isAuth=false;
@@ -21,7 +22,7 @@ Pin p4(10,"00p4");
 
 uint32_t lastReconnectAttempt = 0;
 
-// #include <mqttfuns.h>
+//Call back fuction for mqtt , gets called when a messgage arrives
 void mqttCallback(char* topic, byte* payload, unsigned int len) {
   SerialMon.print(F("Message arrived ["));
   SerialMon.print(topic);
@@ -56,7 +57,7 @@ boolean mqttConnect() {
   }
   SerialMon.println(" success");
   mqtt.publish(logsPath,"GsmClientTest started");
-  // mqtt.subscribe(topicLed);
+  mqtt.subscribe(topicToSubscribe);
   return mqtt.connected();
 }
 
