@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <setup.h>
 // Your GPRS credentials, if any
 const char apn[] = "www";
@@ -16,7 +17,6 @@ Pin p4(10,"00p4");
 uint32_t lastReconnectAttempt = 0;
 
 // #include <mqttfuns.h>
-#include <Arduino.h>
 void mqttCallback(char* topic, byte* payload, unsigned int len) {
   SerialMon.print("Message arrived [");
   SerialMon.print(topic);
@@ -89,7 +89,7 @@ void setup()
   SerialMon.println(" success");
 
   if (modem.isNetworkConnected()) {
-    SerialMon.println("Network connected");
+    SerialMon.println(F("Network connected"));
   }
   // GPRS connection parameters are usually set after network registration
     SerialMon.print(F("Connecting to "));
@@ -112,7 +112,7 @@ void setup()
 void loop()
 {
   if (!mqtt.connected()) {
-    SerialMon.println("=== MQTT NOT CONNECTED ===");
+    SerialMon.println(F("=== MQTT NOT CONNECTED ==="));
     // Reconnect every 10 seconds
     uint32_t t = millis();
     if (t - lastReconnectAttempt > 10000L) {
