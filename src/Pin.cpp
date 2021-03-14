@@ -2,12 +2,16 @@
 class Pin
 {
 public:
-    int no;
+    uint8_t no;
     String topic;
     int status = LOW;
-    Pin(int num, String topic_) {
+    Pin(uint8_t num, String topic_) {
         no=num;
-        topic=String(topic_);
+        topic=topic_;
+    }
+    Pin(uint8_t num, String topic_,String base) {
+        no=num;
+        topic=topic_+base;
     }
     //set The pinmode to
     void init()
@@ -32,5 +36,9 @@ public:
     {
         status = !status;
         digitalWrite(no, status);
+    }
+    void set(int status_){
+        status= status_;
+        digitalWrite(no,status_);
     }
 };

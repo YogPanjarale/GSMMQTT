@@ -29,7 +29,8 @@ void mqttCallback(char* topic, byte* payload, unsigned int len) {
   SerialMon.print("]: ");
   SerialMon.write(payload, len);
   SerialMon.println();
-
+  // boolean isValid;
+  // if (topic)
   // Only proceed if incoming message's topic matches
   // if (String(topic) == topicLed) {
   //   ledStatus = !ledStatus;
@@ -48,9 +49,7 @@ boolean mqttConnect() {
   }else // Or, if you want to authenticate MQTT:
   {
   status = mqtt.connect(clientName);
-
   }
-
   if (status == false) {
     SerialMon.println(" fail");
     return false;
