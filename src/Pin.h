@@ -4,12 +4,13 @@ class Pin
 {
 public:
     int no;
-    char* topic;
+    char *topic;
     int status;
-    Pin(int num,String topic_) {}
-    void init(){}
-    void on(){}
-    void off(){}
-    void toggle(){}
+    Pin(int num, String topic_) {}
+    void init() {}
+    void init(int mode) {}
+    void on() {}
+    void off() {}
+    void toggle() {}
 };
 #endif

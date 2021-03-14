@@ -9,9 +9,14 @@ public:
         no=num;
         topic=String(topic_);
     }
+    //set The pinmode to
     void init()
     {
         pinMode(no, OUTPUT);
+    }
+    void init(int mode)
+    {
+        pinMode(no,mode);
     }
     void on()
     {

@@ -7,6 +7,7 @@ const char gprsPass[] = "";
 // MQTT details
 const char* broker = "broker.hivemq.com";
 char topicbase[] ="dev";
+char clientName[] ="dev01";
 
 #include <Pin.h>
 Pin p1(7,"00p1");
@@ -18,7 +19,7 @@ uint32_t lastReconnectAttempt = 0;
 
 // #include <mqttfuns.h>
 void mqttCallback(char* topic, byte* payload, unsigned int len) {
-  SerialMon.print("Message arrived [");
+  SerialMon.print(F("Message arrived ["));
   SerialMon.print(topic);
   SerialMon.print("]: ");
   SerialMon.write(payload, len);
@@ -37,8 +38,7 @@ boolean mqttConnect() {
   SerialMon.print(broker);
 
   // Connect to MQTT Broker
-  boolean status = mqtt.connect("GsmClientTest");
-
+  boolean status = mqtt.connect(clientName);
   // Or, if you want to authenticate MQTT:
   //boolean status = mqtt.connect("GsmClientName", "mqtt_user", "mqtt_pass");
 
@@ -58,7 +58,8 @@ void setup()
   delay(10);
   SerialMon.println("Starting...");
   //setting pins
-  p1.init();p2.init();p3.init();p4.init();
+  p1.init(OUTPUT);p2.init(OUTPUT);p3.init(OUTPUT);p4.init();
+
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
   TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
