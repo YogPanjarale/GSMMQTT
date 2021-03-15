@@ -32,18 +32,30 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
   SerialMon.write(payload, len);
   SerialMon.println();
   String stopic = topic;
-  int lengthRequired= sizeof(topicbase)+sizeof(subPinPath)
-  if (stopic.indexOf(subPinPath))>=0&&len==lengthRequired)
+  int lengthRequired= sizeof(topicbase)+sizeof(subPinPath);
+  if (stopic.indexOf(subPinPath)>=0&&len==(unsigned)lengthRequired&&isdigit(stopic[-1]))
   {
     SerialMon.println("Valid Topic for Pin");
-    // switch (topic[-1])
-    // {
-    // case p1.tchar
-    //     p1.break;
-
-    //     default:
-    //   break;
-    // }
+    String p= (char*)payload;
+    int status = (p.charAt(0) == '0') ? LOW : HIGH;
+    switch (topic[-1])
+    {
+    case '1':
+      p1.set(status);
+      break;
+    case '2':
+      p2.set(status);
+      break;
+    case '3':
+      p3.set(status);
+      break;
+    case '4':
+      p4.set(status);
+      break;
+    default:
+      SerialMon.println("NO PINS Matched");
+      break;
+    }
   }
   // boolean isValid;
   // if (topic)
