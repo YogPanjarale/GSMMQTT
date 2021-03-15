@@ -38,27 +38,36 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     SerialMon.println("Valid Topic for Pin");
     String p= (char*)payload;
     int status = (p.charAt(0) == '0') ? LOW : HIGH;
+    String msg = "Pin n turned " +status?"HIGH":"LOW";
+    char a;
     switch (topic[-1])
     {
     case '1':
       p1.set(status);
+      a='1';
       break;
     case '2':
       p2.set(status);
+      a='2';
       break;
     case '3':
       p3.set(status);
+      a='3';
       break;
     case '4':
       p4.set(status);
+      a='4';
       break;
     default:
       SerialMon.println("NO PINS Matched");
       break;
     }
+    msg.setCharAt(4,a);
+    SerialMon.println(msg);
+    mqtt.publish(logsPath,msg);
   }
-  // boolean isValid;
-  // if (topic)
+  
+
   // Only proceed if incoming message's topic matches
   // if (String(topic) == topicLed) {
   //   ledStatus = !ledStatus;
