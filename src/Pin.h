@@ -8,13 +8,13 @@ public:
     String topic;
     int topicInt;
     int status;
-    Pin(uint8_t num, String topic_);
-    Pin(uint8_t num, String topic_,String base);
-    void init();
-    void init(int mode);
-    void on();
-    void off();
-    void toggle();
-    void set(int status_);
+    Pin(uint8_t num, String topic_){}
+    Pin(uint8_t num, String topic_,String base){}
+    void init(){}
+    void init(int mode){}
+    void on(){}
+    void off(){}
+    void toggle(){}
+    void set(int status_){}
 };
 #endif
