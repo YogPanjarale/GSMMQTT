@@ -5,30 +5,46 @@ const char apn[] = "www";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
 // MQTT details
-const char* broker = "broker.hivemq.com";
-const char topicbase[] ="dev01/";
-const char topicToSubscribe[] ="dev01/#";
-const char clientName[] ="dev01";
-const char logsPath[] ="dev01/log";
-const boolean isAuth=false;
-const char mqttUserName[]="username";
-const char mqttUserpass[]="userpassword";
+const char *broker = "broker.hivemq.com";
+const char topicbase[] = "dev01/";
+const char topicToSubscribe[] = "dev01/#";
+const char clientName[] = "dev01";
+const char logsPath[] = "dev01/log";
+const char subPinPath[] = "/pin/";
+const boolean isAuth = false;
+const char mqttUserName[] = "username";
+const char mqttUserpass[] = "userpassword";
 
 #include <Pin.h>
-Pin p1(7,"00p1");
-Pin p2(8,"00p2");
-Pin p3(9,"00p3");
-Pin p4(10,"00p4");
+Pin p1(7, "00p1");
+Pin p2(8, "00p2");
+Pin p3(9, "00p3");
+Pin p4(10, "00p4");
 
 uint32_t lastReconnectAttempt = 0;
 
 //Call back fuction for mqtt , gets called when a messgage arrives
-void mqttCallback(char* topic, byte* payload, unsigned int len) {
+void mqttCallback(char *topic, byte *payload, unsigned int len)
+{
   SerialMon.print(F("Message arrived ["));
   SerialMon.print(topic);
   SerialMon.print("]: ");
   SerialMon.write(payload, len);
   SerialMon.println();
+  String stopic = topic;
+  int lengthRequired= sizeof(topicbase)+sizeof(subPinPath)
+  if (stopic.indexOf(subPinPath))>=0&&len==lengthRequired)
+  {
+    SerialMon.println("Valid Topic for Pin");
+    // switch (topic[-1])
+    // {
+    // case p1.tchar
+    //     p1.break;
+
+    //     default:
+    //   break;
+    // }
+  }
   // boolean isValid;
   // if (topic)
   // Only proceed if incoming message's topic matches
@@ -39,23 +55,27 @@ void mqttCallback(char* topic, byte* payload, unsigned int len) {
   // }
 }
 
-boolean mqttConnect() {
+boolean mqttConnect()
+{
   SerialMon.print("Connecting to ");
   SerialMon.print(broker);
   boolean status;
   // Connect to MQTT Broker
-  if (isAuth){
-  status = mqtt.connect(clientName, mqttUserName, mqttUserpass);
-  }else // Or, if you want to authenticate MQTT:
+  if (isAuth)
   {
-  status = mqtt.connect(clientName);
+    status = mqtt.connect(clientName, mqttUserName, mqttUserpass);
   }
-  if (status == false) {
+  else // Or, if you want to authenticate MQTT:
+  {
+    status = mqtt.connect(clientName);
+  }
+  if (status == false)
+  {
     SerialMon.println(" fail");
     return false;
   }
   SerialMon.println(" success");
-  mqtt.publish(logsPath,"GsmClientTest started");
+  mqtt.publish(logsPath, "GsmClientTest started");
   mqtt.subscribe(topicToSubscribe);
   return mqtt.connected();
 }
@@ -66,7 +86,10 @@ void setup()
   delay(10);
   SerialMon.println("Starting...");
   //setting pins
-  p1.init(OUTPUT);p2.init(OUTPUT);p3.init(OUTPUT);p4.init();
+  p1.init(OUTPUT);
+  p2.init(OUTPUT);
+  p3.init(OUTPUT);
+  p4.init();
 
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
@@ -86,31 +109,36 @@ void setup()
   SerialMon.println(modemInfo);
 
   // Unlock your SIM card with a PIN if needed
-  if ( GSM_PIN && modem.getSimStatus() != 3 ) {
+  if (GSM_PIN && modem.getSimStatus() != 3)
+  {
     modem.simUnlock(GSM_PIN);
   }
   SerialMon.print("Waiting for network...");
-  if (!modem.waitForNetwork()) {
+  if (!modem.waitForNetwork())
+  {
     SerialMon.println(" fail");
     delay(10000);
     return;
   }
   SerialMon.println(" success");
 
-  if (modem.isNetworkConnected()) {
+  if (modem.isNetworkConnected())
+  {
     SerialMon.println(F("Network connected"));
   }
   // GPRS connection parameters are usually set after network registration
-    SerialMon.print(F("Connecting to "));
-    SerialMon.print(apn);
-    if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
-      SerialMon.println(" fail");
-      delay(10000);
-      return;
-    }
-    SerialMon.println(" success");
+  SerialMon.print(F("Connecting to "));
+  SerialMon.print(apn);
+  if (!modem.gprsConnect(apn, gprsUser, gprsPass))
+  {
+    SerialMon.println(" fail");
+    delay(10000);
+    return;
+  }
+  SerialMon.println(" success");
 
-  if (modem.isGprsConnected()) {
+  if (modem.isGprsConnected())
+  {
     SerialMon.println("GPRS connected");
   }
   // MQTT Broker setup
@@ -120,13 +148,16 @@ void setup()
 
 void loop()
 {
-  if (!mqtt.connected()) {
+  if (!mqtt.connected())
+  {
     SerialMon.println(F("=== MQTT NOT CONNECTED ==="));
     // Reconnect every 10 seconds
     uint32_t t = millis();
-    if (t - lastReconnectAttempt > 10000L) {
+    if (t - lastReconnectAttempt > 10000L)
+    {
       lastReconnectAttempt = t;
-      if (mqttConnect()) {
+      if (mqttConnect())
+      {
         lastReconnectAttempt = 0;
       }
     }

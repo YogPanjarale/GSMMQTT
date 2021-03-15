@@ -5,6 +5,7 @@ class Pin
 {
 public:
     uint8_t no;
+    char tchar;
     String topic;
     int topicInt;
     int status;

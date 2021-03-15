@@ -3,15 +3,18 @@ class Pin
 {
 public:
     uint8_t no;
+    char tchar;
     String topic;
     int status = LOW;
     Pin(uint8_t num, String topic_) {
         no=num;
         topic=topic_;
+        tchar=topic_.charAt(-1);
     }
     Pin(uint8_t num, String topic_,String base) {
         no=num;
         topic=topic_+base;
+        tchar=topic_.charAt(-1);
     }
     //set The pinmode to
     void init()
