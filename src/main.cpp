@@ -33,6 +33,7 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
   SerialMon.println();
   String stopic = topic;
   int lengthRequired= sizeof(topicbase)+sizeof(subPinPath);
+  //Check if message is valid and then turn on/off pins
   if (stopic.indexOf(subPinPath)>=0&&len==(unsigned)lengthRequired&&isdigit(stopic[-1]))
   {
     SerialMon.println("Valid Topic for Pin");
@@ -64,7 +65,9 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     }
     msg.setCharAt(4,a);
     SerialMon.println(msg);
-    mqtt.publish(logsPath,msg);
+    char* msgc;
+    msg.toCharArray(msgc,20);
+    mqtt.publish(logsPath,msgc);
   }
   
 
@@ -96,7 +99,9 @@ boolean mqttConnect()
     return false;
   }
   SerialMon.println(" success");
-  mqtt.publish(logsPath, "GsmClientTest started");
+  char msg[50];
+  snprintf(msg,50,"%s Started",clientName);
+  mqtt.publish(logsPath, msg);
   mqtt.subscribe(topicToSubscribe);
   return mqtt.connected();
 }
