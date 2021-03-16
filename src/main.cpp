@@ -4,16 +4,18 @@
 const char apn[] = "www";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
+
+#include <details.h>
 // MQTT details
-const char *broker = "broker.hivemq.com";
+const char *broker = MYMQTTBROKER;
 const char topicbase[] = "dev01/";
 const char topicToSubscribe[] = "dev01/#";
 const char clientName[] = "dev01";
 const char logsPath[] = "dev01/log";
 const char subPinPath[] = "/pin/";
-const boolean isAuth = false;
-const char mqttUserName[] = "username";
-const char mqttUserpass[] = "userpassword";
+#define isAuth false
+const char mqttUserName[] = MYMQTTUSERNAME;
+const char mqttUserpass[] = MYMQTTUSERPSSWORD;
 
 #include <Pin.h>
 Pin p1(7, "00p1");
