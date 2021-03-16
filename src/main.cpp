@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <setup.h>
 // Your GPRS credentials, if any
-char* apn = (char*)"www";
+char *apn = (char *)"www";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
 
@@ -44,7 +44,7 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     String p = (char *)payload;
     int status = (p.charAt(0) == '0') ? LOW : HIGH;
     String msg = "Pin n turned " + status ? "HIGH" : "LOW";
-    char a='n';
+    char a = 'n';
     switch (topic[-1])
     {
     case '1':
@@ -69,7 +69,7 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     }
     msg.setCharAt(4, a);
     SerialMon.println(msg);
-    char* msgc;
+    char *msgc;
     msg.toCharArray(msgc, 20);
     mqtt.publish(logsPath, msgc);
   }
@@ -101,7 +101,27 @@ boolean mqttConnect()
   mqtt.subscribe(topicToSubscribe);
   return mqtt.connected();
 }
-
+String autoApn(String operatorName)
+{
+  String aapn = "";
+  if (operatorName.indexOf("Airtel"))
+  {
+    aapn = "airtelgprs.com";
+  }
+  else if (operatorName.indexOf("BSNL"))
+  {
+    aapn = "bsnlnet";
+  }
+  else if (operatorName.indexOf("Idea"))
+  {
+    aapn = "internet";
+  }
+  else if (operatorName.indexOf("Vodafone"))
+  {
+    aapn = "www";
+  }
+  return aapn;
+}
 void setup()
 {
   SerialMon.begin(115200);
@@ -135,12 +155,20 @@ void setup()
   {
     modem.simUnlock(GSM_PIN);
   }
-  SerialMon.print("Waiting for network...");
+
+  String operatorName = modem.getOperator();
+  String as = autoApn(operatorName);//apn String
+  SerialMon.println(F("Auto Apn Configured \nOperator Name:"));
+  SerialMon.print(operatorName);
+  SerialMon.println("\nApn Name:");
+  as.toCharArray(apn, 20);
+  SerialMon.print(apn);
+  SerialMon.println("Waiting for network...");
   if (!modem.waitForNetwork())
   {
     SerialMon.println(" fail");
     delay(10000);
-    modem.sendSMS(logNumber,String("Unable to reach Network \n")+String(clientName));
+    modem.sendSMS(logNumber, String("Unable to reach Network \n") + String(clientName));
     return;
   }
   SerialMon.println(" success");
