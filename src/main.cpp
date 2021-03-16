@@ -34,42 +34,42 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
   SerialMon.write(payload, len);
   SerialMon.println();
   String stopic = topic;
-  int lengthRequired= sizeof(topicbase)+sizeof(subPinPath);
+  int lengthRequired = sizeof(topicbase) + sizeof(subPinPath);
   //Check if message is valid and then turn on/off pins
-  if (stopic.indexOf(subPinPath)>=0&&len==(unsigned)lengthRequired&&isdigit(stopic[-1]))
+  if (stopic.indexOf(subPinPath) >= 0 && len == (unsigned)lengthRequired && isdigit(stopic[-1]))
   {
     SerialMon.println("Valid Topic for Pin");
-    String p= (char*)payload;
+    String p = (char *)payload;
     int status = (p.charAt(0) == '0') ? LOW : HIGH;
-    String msg = "Pin n turned " +status?"HIGH":"LOW";
+    String msg = "Pin n turned " + status ? "HIGH" : "LOW";
     char a;
     switch (topic[-1])
     {
     case '1':
       p1.set(status);
-      a='1';
+      a = '1';
       break;
     case '2':
       p2.set(status);
-      a='2';
+      a = '2';
       break;
     case '3':
       p3.set(status);
-      a='3';
+      a = '3';
       break;
     case '4':
       p4.set(status);
-      a='4';
+      a = '4';
       break;
     default:
       SerialMon.println("NO PINS Matched");
       break;
     }
-    msg.setCharAt(4,a);
+    msg.setCharAt(4, a);
     SerialMon.println(msg);
     char* msgc;
-    msg.toCharArray(msgc,20);
-    mqtt.publish(logsPath,msgc);
+    msg.toCharArray(msgc, 20);
+    mqtt.publish(logsPath, msgc);
   }
   
 
@@ -102,7 +102,7 @@ boolean mqttConnect()
   }
   SerialMon.println(" success");
   char msg[50];
-  snprintf(msg,50,"%s Started",clientName);
+  snprintf(msg, 50, "%s Started", clientName);
   mqtt.publish(logsPath, msg);
   mqtt.subscribe(topicToSubscribe);
   return mqtt.connected();
