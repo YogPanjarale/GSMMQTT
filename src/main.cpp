@@ -1,11 +1,13 @@
 #include <Arduino.h>
 #include <setup.h>
 // Your GPRS credentials, if any
-const char apn[] = "www";
+char* apn = (char*)"www";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
 
 #include <details.h>
+//phone number to send report logs
+const char logNumber[] = YOURLOGSPHONENUMBER;
 // MQTT details
 const char *broker = MYMQTTBROKER;
 const char topicbase[] = "dev01/";
@@ -42,7 +44,7 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     String p = (char *)payload;
     int status = (p.charAt(0) == '0') ? LOW : HIGH;
     String msg = "Pin n turned " + status ? "HIGH" : "LOW";
-    char a;
+    char a='n';
     switch (topic[-1])
     {
     case '1':
@@ -71,14 +73,6 @@ void mqttCallback(char *topic, byte *payload, unsigned int len)
     msg.toCharArray(msgc, 20);
     mqtt.publish(logsPath, msgc);
   }
-  
-
-  // Only proceed if incoming message's topic matches
-  // if (String(topic) == topicLed) {
-  //   ledStatus = !ledStatus;
-  //   digitalWrite(LED_PIN, ledStatus);
-  //   mqtt.publish(topicLedStatus, ledStatus ? "1" : "0");
-  // }
 }
 
 boolean mqttConnect()
@@ -118,7 +112,7 @@ void setup()
   p2.init(OUTPUT);
   p3.init(OUTPUT);
   p4.init();
-
+  // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
   TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
@@ -146,6 +140,7 @@ void setup()
   {
     SerialMon.println(" fail");
     delay(10000);
+    modem.sendSMS(logNumber,String("Unable to reach Network \n")+String(clientName));
     return;
   }
   SerialMon.println(" success");
