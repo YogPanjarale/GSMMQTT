@@ -54,7 +54,7 @@ public:
         status = status_;
         digitalWrite(no, status_);
     }
-    float analogReadp()
+    int analogReadp()
     {
         if (mode == INPUT)
         {
