@@ -131,7 +131,7 @@ void setup()
   p1.init(OUTPUT);
   p2.init(OUTPUT);
   p3.init(OUTPUT);
-  p4.init();
+  p4.init(OUTPUT);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate

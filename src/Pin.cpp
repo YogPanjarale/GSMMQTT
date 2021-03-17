@@ -6,6 +6,7 @@ public:
     char tchar;
     String topic;
     int status = LOW;
+    int mode;
     Pin(uint8_t num) {
         no=num;
     }
@@ -22,11 +23,13 @@ public:
     //set The pinmode to
     void init()
     {
+        mode=OUTPUT;
         pinMode(no, OUTPUT);
     }
-    void init(int mode)
+    void init(int mode_)
     {
-        pinMode(no,mode);
+        mode=mode_;
+        pinMode(no,mode_);
     }
     void on()
     {
