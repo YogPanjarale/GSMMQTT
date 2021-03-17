@@ -12,8 +12,9 @@ public:
     float Vin;// real voltage connected to +ve terminal 
     float R1; // resistance of R1 (100K) connected to +
     float R2; // resistance of R2 (10K) connected to -
-    float recommendedVoltage;
-    void setRecommendedVoltage(){}
+    float recommendedVoltageMin;
+    float recommendedVoltageMax;
+    void setRecommendedVoltage(float min,float max){}
     Battery(){}
     Battery(uint8_t pin, float R1_, float R2_) {}
     void init(uint8_t pin, float R1_, float R2_) {}

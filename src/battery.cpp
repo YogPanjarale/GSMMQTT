@@ -10,9 +10,11 @@ public:
     float Vin;  // real voltage connected to +ve terminal
     float R1;   // resistance of R1 (100K) connected to +
     float R2;   // resistance of R2 (10K) connected to -
-    float recommendedVoltage;
-    void setRecommendedVoltage(float voltage){
-        recommendedVoltage=voltage;
+    float recommendedVoltageMin;
+    float recommendedVoltageMax;
+    void setRecommendedVoltage(float min,float max){
+        recommendedVoltageMin=min;
+        recommendedVoltageMax=max;
     }
     /*in middle of R1 and R2 ( +ve )R1----Vout----R2( -ve )
     real voltage connected to +ve terminal
