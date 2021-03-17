@@ -20,6 +20,9 @@ public:
     void init(uint8_t pin, float R1_, float R2_) {}
     float voltage();
 };
+float Battery::voltage(){
+    return 0;
+}
 
 #endif
 /*Voltage meter refrence

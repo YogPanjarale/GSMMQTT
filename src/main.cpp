@@ -136,7 +136,7 @@ void setup()
   p4.init(OUTPUT);
   batteryRelay.init(OUTPUT);
   battery.init(a1,100000.00,10000.00);
-  battery.setRecommendedVoltage(13.5);
+  battery.setRecommendedVoltage(10.5,14);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
@@ -201,7 +201,15 @@ void setup()
   mqtt.setServer(broker, 1883);
   mqtt.setCallback(mqttCallback);
 }
-
+//TODO: push battery updates to mqtt
+void checkBattery(){
+  float v=battery.voltage();
+  if (v>battery.recommendedVoltageMax){
+    batteryRelay.off();
+  }else if(v<battery.recommendedVoltageMin){
+    batteryRelay.on();
+  }
+}
 void loop()
 {
   if (!mqtt.connected())
@@ -220,4 +228,5 @@ void loop()
     delay(100);
     return;
   }
+  checkBattery();
 }
