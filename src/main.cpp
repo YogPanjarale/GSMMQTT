@@ -24,6 +24,7 @@ Pin p1(7, "00p1");
 Pin p2(8, "00p2");
 Pin p3(9, "00p3");
 Pin p4(10, "00p4");
+Pin batteryRelay(11);
 int a1=15;//A1 pin number
 Battery battery;
 uint32_t lastReconnectAttempt = 0;
@@ -133,6 +134,7 @@ void setup()
   p2.init(OUTPUT);
   p3.init(OUTPUT);
   p4.init(OUTPUT);
+  batteryRelay.init(OUTPUT);
   battery.init(a1,100000.00,10000.00);
   battery.setRecommendedVoltage(13.5);
   // apn = (char *)"www";
