@@ -19,5 +19,6 @@ public:
     void off(){}
     void toggle(){}
     void set(int status_){}
+    float analogReadp(){}
 };
 #endif
