@@ -54,14 +54,5 @@ public:
         status = status_;
         digitalWrite(no, status_);
     }
-    int analogReadp()
-    {
-        if (mode == INPUT)
-        {
-            return analogRead(no);
-        }
-        //TODO:remove this if it takes up memory
-        Serial.println(F("Pin mode is not Input still Tried to use anologRead"));
-        return 0;
-    }
+    
 };
