@@ -9,6 +9,7 @@ public:
     String topic;
     int topicInt;
     int status;
+    Pin(uint8_t num){}
     Pin(uint8_t num, String topic_){}
     Pin(uint8_t num, String topic_,String base){}
     void init(){}

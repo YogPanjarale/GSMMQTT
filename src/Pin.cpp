@@ -6,6 +6,9 @@ public:
     char tchar;
     String topic;
     int status = LOW;
+    Pin(uint8_t num) {
+        no=num;
+    }
     Pin(uint8_t num, String topic_) {
         no=num;
         topic=topic_;
