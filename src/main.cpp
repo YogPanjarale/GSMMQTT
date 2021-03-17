@@ -134,6 +134,7 @@ void setup()
   p3.init(OUTPUT);
   p4.init(OUTPUT);
   battery.init(a1,100000.00,10000.00);
+  battery.setRecommendedVoltage(13.5);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
