@@ -18,13 +18,14 @@ const char subPinPath[] = "/pin/";
 #define isAuth false
 const char mqttUserName[] = MYMQTTUSERNAME;
 const char mqttUserpass[] = MYMQTTUSERPSSWORD;
-
+#include <battery.h>
 #include <Pin.h>
 Pin p1(7, "00p1");
 Pin p2(8, "00p2");
 Pin p3(9, "00p3");
 Pin p4(10, "00p4");
-
+int a1=15;//A1 pin number
+Battery battery;
 uint32_t lastReconnectAttempt = 0;
 
 //Call back fuction for mqtt , gets called when a messgage arrives
@@ -132,6 +133,7 @@ void setup()
   p2.init(OUTPUT);
   p3.init(OUTPUT);
   p4.init(OUTPUT);
+  battery.init(a1,100000.00,10000.00);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
