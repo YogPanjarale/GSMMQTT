@@ -25,7 +25,7 @@ Pin p2(8, "00p2");
 Pin p3(9, "00p3");
 Pin p4(10, "00p4");
 Pin batteryRelay(11);
-int a1=15;//A1 pin number
+int a0=A0;//A0 pin number
 Battery battery;
 uint32_t lastReconnectAttempt = 0;
 
@@ -135,7 +135,8 @@ void setup()
   p3.init(OUTPUT);
   p4.init(OUTPUT);
   batteryRelay.init(OUTPUT);
-  battery.init(a1,100000.00,10000.00);
+  analogReference(INTERNAL);
+  battery.init(a0,100000.00,10000.00);
   battery.setRecommendedVoltage(10.5,14);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
