@@ -25,7 +25,7 @@ Pin p2(8, "00p2");
 Pin p3(9, "00p3");
 Pin p4(10, "00p4");
 Pin batteryRelay(11);
-int a0=A0;//A0 pin number
+int a0 = A0; //A0 pin number
 Battery battery;
 uint32_t lastReconnectAttempt = 0;
 
@@ -96,7 +96,9 @@ boolean mqttConnect()
     SerialMon.println(" fail");
     return false;
   }
-  SerialMon.println(" success");
+  else{
+  SerialMon.println(" Success");
+  }
   char msg[50];
   snprintf(msg, 50, "%s Started", clientName);
   mqtt.publish(logsPath, msg);
@@ -105,6 +107,7 @@ boolean mqttConnect()
 }
 String autoApn(String operatorName)
 {
+  SerialMon.println("==AUTO APN START==");
   String aapn = "";
   if (operatorName.indexOf("Airtel"))
   {
@@ -122,8 +125,12 @@ String autoApn(String operatorName)
   {
     aapn = "www";
   }
+  SerialMon.print("==APN:");
+  SerialMon.print(aapn);
+  SerialMon.println("==");
   return aapn;
 }
+
 void setup()
 {
   SerialMon.begin(115200);
@@ -136,12 +143,12 @@ void setup()
   p4.init(OUTPUT);
   batteryRelay.init(OUTPUT);
   analogReference(INTERNAL);
-  battery.init(a0,100000.00,10000.00);
-  battery.setRecommendedVoltage(10.5,14);
+  battery.init(a0, 100000.00, 10000.00);
+  battery.setRecommendedVoltage(10.5, 14);
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
-  int baud=TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
+  int baud = TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
   SerialMon.println("GSM module baud rate Set...");
   SerialMon.println(baud);
   // SerialAT.begin(9600);
@@ -164,7 +171,7 @@ void setup()
   }
 
   String operatorName = modem.getOperator();
-  String as = autoApn(operatorName);//apn String
+  String as = autoApn(operatorName); //apn String
   SerialMon.println(F("Auto Apn Configured \nOperator Name:"));
   SerialMon.print(operatorName);
   SerialMon.println("\nApn Name:");
@@ -178,7 +185,7 @@ void setup()
     modem.sendSMS(logNumber, String("Unable to reach Network \n") + String(clientName));
     return;
   }
-  SerialMon.println(" success");
+  SerialMon.println(" Success");
 
   if (modem.isNetworkConnected())
   {
@@ -204,11 +211,15 @@ void setup()
   mqtt.setCallback(mqttCallback);
 }
 //TODO: push battery updates to mqtt
-void checkBattery(){
-  float v=battery.voltage();
-  if (v>battery.recommendedVoltageMax){
+void checkBattery()
+{
+  float v = battery.voltage();
+  if (v > battery.recommendedVoltageMax)
+  {
     batteryRelay.off();
-  }else if(v<battery.recommendedVoltageMin){
+  }
+  else if (v < battery.recommendedVoltageMin)
+  {
     batteryRelay.on();
   }
 }
