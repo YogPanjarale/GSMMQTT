@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 //select your modem:
-#define TINY_GSM_MODEM_SIM900 // first define this then include tinygsm ans other libs
+#define TINY_GSM_MODEM_SIM800 // first define this then include tinygsm ans other libs
 #include <TinyGsmClient.h>
 #include <StreamDebugger.h>
 #include <PubSubClient.h>
@@ -9,7 +9,7 @@
 //set serial for debug console (to serial Monitor)
 #define SerialMon Serial
 //Software Sreial on Uno, Nano
-SoftwareSerial SerialAT(2, 3); //RX,TX
+SoftwareSerial SerialAT(3, 2); //RX,TX 
 //Set Serial for AT commands (to the module)
 // Define the serial console for debug prints, if needed
 #define TINY_GSM_DEBUG SerialMon

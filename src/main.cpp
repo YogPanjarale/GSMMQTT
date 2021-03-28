@@ -141,8 +141,9 @@ void setup()
   // apn = (char *)"www";
   SerialMon.println("Pins Initialized...");
   // Set GSM module baud rate
-  TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
+  int baud=TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
   SerialMon.println("GSM module baud rate Set...");
+  SerialMon.println(baud);
   // SerialAT.begin(9600);
   delay(6000);
 
