@@ -15,6 +15,8 @@ const char topicToSubscribe[] = "dev01/#";
 const char clientName[] = "dev01";
 const char logsPath[] = "dev01/log";
 const char subPinPath[] = "/pin/";
+const char batteryLogPath[]= "dev01/battery";
+const int batteryLogIntervel = 5;//in seconds
 #define isAuth IsAuth
 const char mqttUserName[] = MYMQTTUSERNAME;
 const char mqttUserpass[] = MYMQTTUSERPSSWORD;
@@ -83,7 +85,7 @@ boolean mqttConnect()
   SerialMon.print(broker);
   boolean status;
   // Connect to MQTT Broker
-  if (isAuth)
+  if (!isAuth)
   {
     status = mqtt.connect(clientName, mqttUserName, mqttUserpass);
   }
@@ -224,6 +226,18 @@ void checkBattery()
     batteryRelay.on();
   }
 }
+uint16_t lastBatteryLogUpdateTime = 0;
+void pushBatteryUpdates(float v){
+  unsigned long t = millis();
+  if(t-lastBatteryLogUpdateTime>batteryLogIntervel*1000){
+    String msg = "Battery Voltage";
+    msg+=String(v);
+    Serial.print(msg);
+    char *msgc;
+    msg.toCharArray(msgc, 20);
+    mqtt.publish(batteryLogPath,msgc);
+  }
+}
 void loop()
 {
   if (!mqtt.connected())
@@ -241,6 +255,7 @@ void loop()
     }
     delay(100);
     return;
-  }
+  }else{
   checkBattery();
+  }
 }
