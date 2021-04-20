@@ -208,7 +208,7 @@ void setup()
     SerialMon.println("GPRS connected");
   }
   // MQTT Broker setup
-  mqtt.setServer(broker, 1883);
+  mqtt.setServer(broker, MYMQTTPORT);
   mqtt.setCallback(mqttCallback);
 }
 //TODO: push battery updates to mqtt
