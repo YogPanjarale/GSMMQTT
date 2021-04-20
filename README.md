@@ -7,7 +7,7 @@ I used [Platfrom.io](https://platformio.org/) with [vs code](https://code.visual
 > Note
 if you want to run this make a `details.h` file in src diectory and copy the contents from `detais copy.h` and change values acording to your mqtt broker and username password
 
-## Hardware I used
+## Hardware used
 
 1. Arduino nano
-2. Sim900a module
+2. Sim800a module

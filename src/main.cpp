@@ -133,7 +133,8 @@ String autoApn(String operatorName)
 
 void setup()
 {
-  SerialMon.begin(115200);
+  // SerialMon.begin(115200);
+  SerialMon.begin(9600);
   delay(10);
   SerialMon.println("Starting...");
   //setting pins
