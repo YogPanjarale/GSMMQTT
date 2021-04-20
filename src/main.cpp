@@ -15,7 +15,7 @@ const char topicToSubscribe[] = "dev01/#";
 const char clientName[] = "dev01";
 const char logsPath[] = "dev01/log";
 const char subPinPath[] = "/pin/";
-#define isAuth false
+#define isAuth IsAuth
 const char mqttUserName[] = MYMQTTUSERNAME;
 const char mqttUserpass[] = MYMQTTUSERPSSWORD;
 #include <battery.h>
